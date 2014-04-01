@@ -1,0 +1,107 @@
+/*RESET*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin:0; padding:0; border:0; outline:0; font-size:100%; vertical-align:baseline; background:transparent;} body {line-height: 1;}ol, ul{list-style:none;} blockquote, q{quotes:none;} blockquote:before, blockquote:after, q:before, q:after{content:'';content:none;} :focus{outline:0;} ins{text-decoration:none;} del{text-decoration:line-through;} table{border-collapse:collapse; border-spacing:0;}
+
+html {
+	background:url(bg_pat.jpg) repeat;
+	font-family:'arial';	
+}
+#wrapper {
+	width:100%;
+}
+
+section {
+	margin:0 auto;
+	width:400px;
+	background-color:#edeff1;
+	color:#000;
+	margin-top:50px;
+	height:350px;
+	border-radius:5px;
+}
+
+section h2 {
+	margin-top:10px;
+	font-size:1.2em;
+	font-weight:bolder;
+	margin-bottom:5px;
+}
+
+.form-wrap {
+	margin:30px 0px 0px 20px;
+}
+
+.form-wrap h1 {
+	font-size:2em;
+	margin-bottom:40px;
+	padding-top:20px;
+}
+
+#answer {
+	margin-top:10px;
+}
+
+#answer p {
+	font-weight:bold;
+	margin-top:12px;
+}
+
+input {
+	margin-top:5px;
+	border-radius:3px;
+	border:1px solid #BDC3C7;
+
+}
+
+input:focus {
+	border:2px solid #1ABC9C;
+}
+
+#submit {
+	width:210px;
+	height:30px;
+	margin-left:2px;
+	margin-top:5px;
+	background-color: #1ABC9C;
+	color:#fff;
+	transition:0.3s ease;
+
+}
+
+#submit:hover {
+	background-color:#1ABC7C;
+}
+
+input[type=text] {
+	height:30px;
+	text-indent:5px;
+}
+
+input[type=password] {
+	height:30px;
+	text-indent:5px;
+	margin-top:5px;
+}
+
+#register {
+	width:210px;
+	height:30px;
+	margin-left:2px;
+	margin-top:10px;
+	background-color: #1ABC9C;
+	transition:0.3s ease;
+	text-align:center;
+}
+
+#register a {
+	width:210px;
+	height:30px;
+	color:#fff;
+	text-decoration:none;
+	line-height:30px;
+	font-size: 0.8em;
+	display:block;
+}
+
+#register:hover {
+	background-color:#1ABC7C;
+}
