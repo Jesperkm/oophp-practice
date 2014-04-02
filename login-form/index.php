@@ -11,7 +11,6 @@
 <body>
 <div id="wrapper">
 
-
 <section class="loginclass">
 		<div class="form-wrap">
 			<h1>Login Form PHP</h1>
@@ -33,8 +32,6 @@
 				</div>
 		</div>
 </section>
-
-
 
 </div>
 </body>
