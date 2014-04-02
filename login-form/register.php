@@ -25,8 +25,8 @@
 				<div id="answer">
 					<?php 
 					if (isset($_POST["submitted"])) {
-						$newuser = new user($_POST["user"], $_POST["pass"]);
-						$newuser->register();
+						$user = new user($_POST["user"], $_POST["pass"]);
+						$user->register();
 					}
 					?>
 				</div>
