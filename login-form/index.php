@@ -25,8 +25,8 @@
 				<div id="answer">
 					<?php 
 					if (isset($_POST["submitted"])) {
-						$user = new user($_POST["user"], $_POST["pass"]);
-						$user->LogMeIn();
+						$login = new user($_POST["user"], $_POST["pass"]);
+						$login->LogMeIn();
 					}
 					?>
 				</div>

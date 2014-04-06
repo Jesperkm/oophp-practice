@@ -3,7 +3,7 @@
 	class user {
 
 		public $user;
-		public $pass; 
+		private $pass; 
 
 
 		public function __construct($username, $password) {
@@ -11,12 +11,11 @@
 			$this->pass = $password;
 		} //ends construct
 
-
 		public function LogMeIn() {
 			//Validate Email
 			if (!filter_var($this->user, FILTER_VALIDATE_EMAIL)) {
 				echo "invalid email!";
-			} 
+			} //ends if statement
 
 			else {
 				//connect to DB
@@ -54,9 +53,8 @@
 			$connect = mysqli_connect("localhost","user","","logmein");
 
 			//set var data for later validation
-			$check = "SELECT * FROM register WHERE Username = '$this->user'";
-			$rs = mysqli_query($connect,$check);
-			$data = mysqli_fetch_array($rs, MYSQLI_NUM);
+			$check = mysqli_query($connect, "SELECT * FROM register WHERE Username = '$this->user'");
+			$data = mysqli_fetch_array($check, MYSQLI_NUM);
 				
 			//Validate Email
 			if (!filter_var($this->user, FILTER_VALIDATE_EMAIL)) {
