@@ -1,84 +1,73 @@
 <?php 
 
-	class user {
+class user {
 
-		public $user;
-		private $pass; 
+	public $user;
+	private $pass;
 
-
-		public function __construct($username, $password) {
-			$this->user = $username;
-			$this->pass = $password;
-		} //ends construct
-
-		public function LogMeIn() {
-			//Validate Email
-			if (!filter_var($this->user, FILTER_VALIDATE_EMAIL)) {
-				echo "invalid email!";
-			} //ends if statement
-
-			else {
-				//connect to DB
-			    $connect = mysqli_connect("localhost","user","","logmein");
-
-			    //Avoid SQL injection and store the user in myuser
-			    $myuser = mysqli_real_escape_string($connect, $this->user);
-
-			    //Check user "myuser" in database
-				$user = mysqli_query($connect, "SELECT * FROM register WHERE username = '" .$myuser. "' ");
-
-				//Output from database to variable "row"
-			    $row = mysqli_fetch_array($user, MYSQLI_ASSOC);
-
-			    //Check connection
-			    if (mysqli_connect_errno()) {
-			          echo "Failed to connect to MySQL: " . mysqli_connect_error();
-			    }
-			    //Validate if the input is equal to the database
-			    elseif ($this->user == $row["Username"] && $this->pass == $row["Password"]) {
-			        echo "Login succeded!";
-			    }
-			    //If validation fails, give user error message 
-			    else {
-			        echo "Incorrect username or password!";
-		    	}
-
-			} //ends else statement
-
-		} //ends method LogMeIn
+	private $db;
+	private $stmt;
 
 
-		public function register() {
-			//connect to DB
-			$connect = mysqli_connect("localhost","user","","logmein");
+	public function __construct($username, $password) {
+		$this->user = $username;
+		$this->pass = $password;
+		$pdo = new PDO("mysql:host=localhost;dbname=logmein;charset=utf8", "user", "password");
+	}
 
-			//set var data for later validation
-			$check = mysqli_query($connect, "SELECT * FROM register WHERE Username = '$this->user'");
-			$data = mysqli_fetch_array($check, MYSQLI_NUM);
-				
-			//Validate Email
-			if (!filter_var($this->user, FILTER_VALIDATE_EMAIL)) {
-					echo "invalid email!";
+	public function LogMeIn() {
+		# Validate Email
+		if (!filter_var($this->user, FILTER_VALIDATE_EMAIL)) {
+			return false;
+		}
+			
+	    # Check user "myuser" in database
+
+	    # It's a good idea to specify what you want from the database instead of
+	    # using *, which ends up being two queries. 1 to find what columns you want
+	    # and another to get the data
+		$query = "SELECT username, password FROM register WHERE username = :username";
+		$this->stmt = $this->db->prepare($query);
+		
+		# Prepared statements your friend
+		$this->stmt->bindParam(":username", $this->user, PDO::PARAM_STR);
+		$this->stmt->execute();
+		if($this->stmt->rowCount() == 1) {
+			$data = $this->stmt->fetch(PDO::FETCH_ASSOC);
+			if(password_verify($data["password"], $this->pass)) {
+				return true;
 			}
+		}
 
-			//Check if user exist
-			elseif ($data[0] > 1) {
-				exit("User already exists");
-			}
+	}
 
-			//Insert into Database
-			else {
-				$sqlinsert = mysqli_query($connect, "INSERT INTO register (Username, Password) VALUES ('".$this->user."', '".$this->pass."')");
 
-				//Message if succeded
-				if ($sqlinsert == true) {
-					echo "You have been registered succesfully!";
-				}
+	public function register() {
+		if($this->checkUserExists()) {
+			return false; # User already exists
+		}
 
-			} //ends else statement
+		# User PHP's password hashing
+		# https://php.net/manual/en/function.password-hash.php
+		$pass = password_hash($this->pass, PASSWORD_DEFAULT);
 
-		} //ends method register
+		$query = "INSERT INTO register (username, password)
+		VALUES (:username, :password)";
+		$this->stmt = $this->db->prepare($query);
+		$this->stmt->bindParam(":username", $this->user, PDO::PARAM_STR);
+		$this->stmt->bindParam(":password", $pass, PDO::PARAM_STR);
+		$this->stmt->execute();
+		return true;
+	}
 
-	} //ends class user	
+	private function checkUserExists() {
+		$query = "SELECT username FROM register WHERE username = :username";
+		$this->stmt = $this->db->prepare($query);
+		$this->stmt->bindParam(":username", $this->user, PDO::PARAM_STR);
+		$this->stmt->execute();
+		if($this->stmt->rowCount() > 0) {
+			return true;
+		}
+	}
 
- ?>
+} //ends class user	
